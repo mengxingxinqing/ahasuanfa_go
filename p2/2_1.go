@@ -9,9 +9,11 @@ import "fmt"
 // 1 3 5 7 2 6 4 8
 //还原流程,从后往前 将最后一位移动到前面第二位，再把读到的数放在最前面，
 // 8  48 684 2468 78246 567824 3456782 12345678
+// 8  48 684
+// 1 3 5 7 2 6 4 8
 
 //数组方式实现加密过程
-func QQEncryptionWithArr(arr []int) []int {
+func QQEncodeWithArr(arr []int) []int {
 	l := len(arr)
 	if l <= 2 {
 		return arr
@@ -46,4 +48,25 @@ func Rule(arr []int, l int) int {
 	arr[l-1] = 0
 	fmt.Println(l, "top", top, arr)
 	return top
+}
+
+func QQDecodeWithArr(arr []int) []int {
+	if len(arr) <= 2 {
+		return arr
+	}
+	for i := len(arr) - 3; i >= 0; i-- {
+		DeRule(arr, i)
+	}
+	return arr
+}
+
+//将i位置以后的数据右移一位，然后将原来的最后一位放到i的下一位
+func DeRule(arr []int, i int) {
+	l := len(arr)
+	end := arr[l-1]
+	for j := l - 2; j > i; j-- {
+		arr[j+1] = arr[j]
+	}
+	arr[i+1] = end
+	fmt.Println(i, arr)
 }
