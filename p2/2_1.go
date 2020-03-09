@@ -74,15 +74,21 @@ func DeRule(arr []int, i int) {
 type Queue struct {
 	h    int
 	t    int
-	data [20]int
+	data []interface{}
 }
 
-func (q *Queue) Add(i int) {
+func NewQueue(cap int) *Queue {
+	q := &Queue{}
+	q.data = make([]interface{}, cap)
+	return q
+}
+
+func (q *Queue) Add(i interface{}) {
 	q.data[q.t] = i
 	q.t++
 }
 
-func (q *Queue) Pop() (int, bool) {
+func (q *Queue) Pop() (interface{}, bool) {
 	if q.Empty() {
 		return 0, false
 	}
@@ -99,14 +105,14 @@ func (q *Queue) Empty() bool {
 
 //加密方法 用队列实现
 func QQEncodeWithQueue(arr []int) []int {
-	q := &Queue{}
+	q := NewQueue(30)
 	for _, d := range arr {
 		q.Add(d)
 	}
 	res := make([]int, 0)
 	for !q.Empty() {
 		f, _ := q.Pop()
-		res = append(res, f)
+		res = append(res, f.(int))
 		if s, ok := q.Pop(); ok {
 			q.Add(s)
 		}

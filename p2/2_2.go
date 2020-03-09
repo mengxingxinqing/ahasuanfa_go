@@ -1,12 +1,20 @@
 package p2
 
+//回文检测 aba abba是回文 abab不是回文
+
 type Stack struct {
-	data [1000]int32
+	data []interface{}
 	head int
 }
 
+func NewStack(cap int) *Stack {
+	s := &Stack{}
+	s.data = make([]interface{}, cap)
+	return s
+}
+
 //0位置留空 从下标1开始使用
-func (s *Stack) Pop() (int32, bool) {
+func (s *Stack) Pop() (interface{}, bool) {
 	if s.Empty() {
 		return 0, false
 	}
@@ -15,7 +23,7 @@ func (s *Stack) Pop() (int32, bool) {
 	return d, true
 }
 
-func (s *Stack) Push(d int32) {
+func (s *Stack) Push(d interface{}) {
 	s.head++
 	s.data[s.head] = d
 }
@@ -37,7 +45,7 @@ func CheckHuiwen(s string) bool {
 		return true
 	}
 
-	stack := &Stack{}
+	stack := NewStack(1000)
 	for i, c := range s {
 		if sLen%2 == 1 && i == sLen/2 {
 			continue
@@ -47,6 +55,7 @@ func CheckHuiwen(s string) bool {
 		}
 		if i >= sLen/2 {
 			t, _ := stack.Pop()
+
 			if t != c {
 				return false
 			}
