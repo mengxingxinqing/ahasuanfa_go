@@ -60,7 +60,7 @@ func QQDecodeWithArr(arr []int) []int {
 	return arr
 }
 
-//将i位置以后的数据右移一位，然后将原来的最后一位放到i的下一位
+//将i位置后面的数据右移一位，然后将原来的最后一位放到i的下一位
 func DeRule(arr []int, i int) {
 	l := len(arr)
 	end := arr[l-1]
@@ -69,4 +69,47 @@ func DeRule(arr []int, i int) {
 	}
 	arr[i+1] = end
 	fmt.Println(i, arr)
+}
+
+type Queue struct {
+	h    int
+	t    int
+	data [20]int
+}
+
+func (q *Queue) Add(i int) {
+	q.data[q.t] = i
+	q.t++
+}
+
+func (q *Queue) Pop() (int, bool) {
+	if q.Empty() {
+		return 0, false
+	}
+	d := q.data[q.h]
+	q.h++
+	return d, true
+}
+func (q *Queue) Empty() bool {
+	if q.h == q.t {
+		return true
+	}
+	return false
+}
+
+//加密方法 用队列实现
+func QQEncodeWithQueue(arr []int) []int {
+	q := &Queue{}
+	for _, d := range arr {
+		q.Add(d)
+	}
+	res := make([]int, 0)
+	for !q.Empty() {
+		f, _ := q.Pop()
+		res = append(res, f)
+		if s, ok := q.Pop(); ok {
+			q.Add(s)
+		}
+	}
+	return res
 }
